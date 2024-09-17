@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 include "retrain.php";
-include "upload.php"
+include "upload.php";
 
 ?>
 
@@ -24,6 +24,8 @@ include "upload.php"
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/repositories.css">
 
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
 </head>
 
 <body>
@@ -34,6 +36,18 @@ include "upload.php"
 
     <!-- main content start -->
     <main class="">
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <!-- Lottie animation player -->
+        <dotlottie-player 
+            src="https://lottie.host/d283b94d-6898-4495-9883-cdc6ada3e7b5/79Vf6zVZPx.json" 
+            background="transparent" 
+            speed="1" 
+            style="width: 300px; height: 300px;" 
+            loop 
+            autoplay>
+        </dotlottie-player>
+    </div>
     <!-- Prediction Section -->
     <div class="card w-100 mb-5">
         <div class="card-body">
@@ -150,6 +164,7 @@ include "upload.php"
 
     <!-- Bootstrap JS -->
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src = "script/loadingscreen.js"></script>
 </body>
 
 </html>

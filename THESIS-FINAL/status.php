@@ -1,7 +1,5 @@
 <?php
-include "status_backend.php"
-
-
+include "status_backend.php";
 ?>
 
 
@@ -24,6 +22,8 @@ include "status_backend.php"
     <link rel="stylesheet" href="styles/global.css">
     <link rel="stylesheet" href="styles/status.css">
 
+ 
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </head>
 
 <body>
@@ -34,6 +34,21 @@ include "status_backend.php"
 
     <!-- main content start -->
     <main>
+
+            <!-- Loading Screen -->
+    <div id="loading-screen">
+        <!-- Lottie animation player -->
+        <dotlottie-player 
+            src="https://lottie.host/d283b94d-6898-4495-9883-cdc6ada3e7b5/79Vf6zVZPx.json" 
+            background="transparent" 
+            speed="1" 
+            style="width: 300px; height: 300px;" 
+            loop 
+            autoplay>
+        </dotlottie-player>
+    </div>
+
+   
         <div class="container">
             <div class="row justify-content-between align-items-start mt-5">
                 <!-- Date Prediction Section -->
@@ -65,17 +80,17 @@ include "status_backend.php"
                         <img src="assets/LLDA-MAPPED.png" alt="Quarterly Report" class="img-fluid">
                         <svg class="svg-overlay" viewBox="0 0 600 600"  preserveAspectRatio="xMidYMid meet">
                             
-                            <circle class="clickable-circle" cx="307" cy="63" r="8" fill="green" data-bs-toggle="modal" data-bs-target="#Station_XIII" />
+                            <circle class="clickable-circle" cx="307" cy="63" r="8" fill="#504c4c" data-bs-toggle="modal" data-bs-target="#Station_XIII" id = "circle_XIII" />
 
-                            <circle class="clickable-circle" cx="366" cy="133" r="8" fill="orange" data-bs-toggle="modal" data-bs-target="#Station_V" />
+                            <circle class="clickable-circle" cx="366" cy="133" r="8" fill="#504c4c" data-bs-toggle="modal" data-bs-target="#Station_V" id = "circle_V" />
 
-                            <circle class="clickable-circle" cx="466" cy="352" r="8" fill="red" data-bs-toggle="modal" data-bs-target="#Station_XIX" />
+                            <circle class="clickable-circle" cx="466" cy="352" r="8" fill="#504c4c" data-bs-toggle="modal" data-bs-target="#Station_XIX" id = "circle_XIX" />
 
-                            <circle class="clickable-circle" cx="240" cy="365" r="8" fill="green" data-bs-toggle="modal" data-bs-target="#Station_I" />
+                            <circle class="clickable-circle" cx="240" cy="365" r="8" fill="#504c4c" data-bs-toggle="modal" data-bs-target="#Station_I" id = "circle_I" />
 
-                            <circle class="clickable-circle" cx="233" cy="493" r="8" fill="orange" data-bs-toggle="modal" data-bs-target="#Station_XV" />
+                            <circle class="clickable-circle" cx="233" cy="493" r="8" fill="#504c4c" data-bs-toggle="modal" data-bs-target="#Station_XV" id = "circle_XV" />
 
-                            <circle class="clickable-circle" cx="346" cy="635" r="8" fill="red" data-bs-toggle="modal" data-bs-target="#Station_XVI" />
+                            <circle class="clickable-circle" cx="346" cy="635" r="8" fill="#504c4c" data-bs-toggle="modal" data-bs-target="#Station_XVI" id = "circle_XVI" />
                         </svg>
                     </div>
                 </div>
@@ -86,8 +101,8 @@ include "status_backend.php"
                         <h5>Legend</h5>
                         <ul class="list-unstyled">
                             <li><span style="color: green;">●</span> Minor</li>
-                            <li><span style="color: orange;">●</span> Massive</li>
-                            <li><span style="color: red;">●</span> Moderate</li>
+                            <li><span style="color: orange;">●</span> Moderate</li>
+                            <li><span style="color: red;">●</span> Massive</li>
                         </ul>
                     </div>
                 </div>
@@ -100,7 +115,7 @@ include "status_backend.php"
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="minorModalLabel">Minor</h5>
+                    <h5 class="modal-title" id="minorModalLabel">Stn XIII (Taytay)</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -111,13 +126,37 @@ include "status_backend.php"
                                 // Round off the prediction to the nearest whole number
                                 $rounded_prediction = round($phyto[$station_to_display]);
                                 echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL<br>";
+
+                                // Send the prediction value to JavaScript for dynamic color change
+                                echo "<script>
+                                var roundedPrediction = $rounded_prediction;
+                                changeCircleColor(roundedPrediction, 'circle_XIII');
+
+                                function changeCircleColor(prediction, circleId) {
+                                                let color = '';
+
+                                                if (prediction <= 10000) {
+                                                    color = 'green';  // Minor impact
+                                                } else if (prediction <= 100000) {
+                                                    color = 'orange';  // Moderate impact
+                                                } else {
+                                                    color = 'red';  // Massive impact
+                                                }
+
+                                                // Change the circle color
+                                                document.getElementById(circleId).setAttribute('fill', color);
+                                            }
+                                </script>";
+
                                     if ($rounded_prediction <= 10000) {
                                         echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
-                                        
+                                       
                                     } elseif ($rounded_prediction <= 100000) {
                                         echo "<b>Moderate:</b> Visible bloom with potential moderate impacts on water quality, including reduced oxygen levels. Potentially harmful to aquatic ecosystems.";
+                                  
                                     } else {
                                         echo "<b>Massive:</b> Severe bloom with significant impacts, including potential toxin production, severe oxygen depletion, and major disruptions to aquatic life and water usability.";
+                                       
                                     }
 
                             } else {
@@ -142,7 +181,7 @@ include "status_backend.php"
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="moderateModalLabel">Moderate</h5>
+                    <h5 class="modal-title" id="moderateModalLabel">Stn V (Northern West Bay) </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -153,6 +192,27 @@ include "status_backend.php"
                                 // Round off the prediction to the nearest whole number
                                 $rounded_prediction = round($phyto[$station_to_display]);
                                 echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL <br>";
+
+                                echo "<script>
+                                var roundedPrediction = $rounded_prediction;
+                                changeCircleColor(roundedPrediction, 'circle_V');
+
+                                function changeCircleColor(prediction, circleId) {
+                                                let color = '';
+
+                                                if (prediction <= 10000) {
+                                                    color = 'green';  // Minor impact
+                                                } else if (prediction <= 100000) {
+                                                    color = 'orange';  // Moderate impact
+                                                } else {
+                                                    color = 'red';  // Massive impact
+                                                }
+
+                                                // Change the circle color
+                                                document.getElementById(circleId).setAttribute('fill', color);
+                                            }
+                                </script>";
+
                                     if ($rounded_prediction <= 10000) {
                                         echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
                                         
@@ -181,7 +241,7 @@ include "status_backend.php"
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="massiveModalLabel">Massive</h5>
+                    <h5 class="modal-title" id="massiveModalLabel">Stn XIX (Muntinlupa)</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -192,6 +252,26 @@ include "status_backend.php"
                             // Round off the prediction to the nearest whole number
                             $rounded_prediction = round($phyto[$station_to_display]);
                             echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL <br>";
+
+                            echo "<script>
+                            var roundedPrediction = $rounded_prediction;
+                            changeCircleColor(roundedPrediction, 'circle_XIX');
+
+                            function changeCircleColor(prediction, circleId) {
+                                            let color = '';
+
+                                            if (prediction <= 10000) {
+                                                color = 'green';  // Minor impact
+                                            } else if (prediction <= 100000) {
+                                                color = 'orange';  // Moderate impact
+                                            } else {
+                                                color = 'red';  // Massive impact
+                                            }
+
+                                            // Change the circle color
+                                            document.getElementById(circleId).setAttribute('fill', color);
+                                        }
+                            </script>";
                                 if ($rounded_prediction <= 10000) {
                                     echo "<b>Minor: </b>Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
                                     
@@ -221,7 +301,7 @@ include "status_backend.php"
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="massiveModalLabel">Massive</h5>
+                    <h5 class="modal-title" id="massiveModalLabel">Stn. I (Central West Bay)</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -232,6 +312,26 @@ include "status_backend.php"
                             // Round off the prediction to the nearest whole number
                             $rounded_prediction = round($phyto[$station_to_display]);
                             echo "<b>Prediction for " . $station_to_display . ": </b>" . $rounded_prediction . "counts/mL <br>";
+
+                            echo "<script>
+                            var roundedPrediction = $rounded_prediction;
+                            changeCircleColor(roundedPrediction, 'circle_I');
+
+                            function changeCircleColor(prediction, circleId) {
+                                            let color = '';
+
+                                            if (prediction <= 10000) {
+                                                color = 'green';  // Minor impact
+                                            } else if (prediction <= 100000) {
+                                                color = 'orange';  // Moderate impact
+                                            } else {
+                                                color = 'red';  // Massive impact
+                                            }
+
+                                            // Change the circle color
+                                            document.getElementById(circleId).setAttribute('fill', color);
+                                        }
+                            </script>";
                                 if ($rounded_prediction <= 10000) {
                                     echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
                                     
@@ -260,7 +360,7 @@ include "status_backend.php"
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="massiveModalLabel">Massive</h5>
+                    <h5 class="modal-title" id="massiveModalLabel">Stn XV (San Pedro)</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -271,6 +371,26 @@ include "status_backend.php"
                             // Round off the prediction to the nearest whole number
                             $rounded_prediction = round($phyto[$station_to_display]);
                             echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL <br>";
+
+                            echo "<script>
+                            var roundedPrediction = $rounded_prediction;
+                            changeCircleColor(roundedPrediction, 'circle_XV');
+
+                            function changeCircleColor(prediction, circleId) {
+                                            let color = '';
+
+                                            if (prediction <= 10000) {
+                                                color = 'green';  // Minor impact
+                                            } else if (prediction <= 100000) {
+                                                color = 'orange';  // Moderate impact
+                                            } else {
+                                                color = 'red';  // Massive impact
+                                            }
+
+                                            // Change the circle color
+                                            document.getElementById(circleId).setAttribute('fill', color);
+                                        }
+                            </script>";
                                 if ($rounded_prediction <= 10000) {
                                     echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
                                     
@@ -299,7 +419,7 @@ include "status_backend.php"
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="massiveModalLabel">Massive</h5>
+                    <h5 class="modal-title" id="massiveModalLabel">Stn.XVI (Sta Rosa)</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -310,6 +430,26 @@ include "status_backend.php"
                             // Round off the prediction to the nearest whole number
                             $rounded_prediction = round($phyto[$station_to_display]);
                             echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL <br>";
+
+                            echo "<script>
+                            var roundedPrediction = $rounded_prediction;
+                            changeCircleColor(roundedPrediction, 'circle_XVI');
+
+                            function changeCircleColor(prediction, circleId) {
+                                            let color = '';
+
+                                            if (prediction <= 10000) {
+                                                color = 'green';  // Minor impact
+                                            } else if (prediction <= 100000) {
+                                                color = 'orange';  // Moderate impact
+                                            } else {
+                                                color = 'red';  // Massive impact
+                                            }
+
+                                            // Change the circle color
+                                            document.getElementById(circleId).setAttribute('fill', color);
+                                        }
+                            </script>";
                                 if ($rounded_prediction <= 10000) {
                                     echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
                                     
@@ -352,6 +492,11 @@ include "status_backend.php"
 
     <!-- Bootstrap JS -->
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript to control the loading screen -->
+    <script src = "script/loadingscreen.js"></script> 
+
+ 
+
 </body>
 
 </html>
