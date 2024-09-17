@@ -1,3 +1,11 @@
+<?php
+error_reporting(E_ERROR | E_PARSE);
+include "retrain.php";
+include "upload.php"
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +38,7 @@
     <div class="card w-100 mb-5">
         <div class="card-body">
             <h1 class="pred_h1 text-center">Prediction</h1>
-            <form action="prediction_MI.php" method="POST">
+            <form action="repositories.php" method="POST">
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="thead-light">
@@ -48,6 +56,7 @@
                         </thead>
                         <tbody>
                             <tr>
+                
                                 <td><input class="form-control" type="text" name="temperature" required></td>
                                 <td><input class="form-control" type="text" name="humidity" required></td>
                                 <td><input class="form-control" type="text" name="wind_speed" required></td>
@@ -64,6 +73,7 @@
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-success mx-2" name="submit_flask">Predict</button>
                     <button type="reset" class="btn btn-secondary mx-2" name="reset_flask">Reset</button>
+                    </form>
                 </div>
             </form>
         </div>

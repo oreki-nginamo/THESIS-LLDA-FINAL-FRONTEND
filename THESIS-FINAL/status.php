@@ -1,3 +1,11 @@
+<?php
+include "status_backend.php"
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,15 +40,20 @@
                 <div class="col-md-4">
                     <div class="prediction-box">
                         <h4>Date Prediction</h4>
-
+                       
                         <!-- Date Picker -->
+                        <form method="get" action="status.php">
                         <label for="date" class="form-label">Choose a date:</label>
-                        <input type="date" id="date" class="form-control mb-3">
+                        <input type="date" id="date" class="form-control mb-3" name="date" min="<?php echo min($dates); ?>" max="<?php echo max($dates); ?>" value="<?php echo isset($_GET['date']) ? $_GET['date'] : date('Y-m-d', strtotime('+1 day')); ?>">
 
                         <!-- Forecast and Predict buttons -->
                         <div class="btn-group">
-                            <button type="button" class="btn btn-success">Forecast</button>
-                            <button type="button" class="btn btn-success">Predict</button>
+                            
+                            <button type="submit" class="btn btn-success" value="Forecast">Forecast</button>
+                        </form>
+                        <form action="status.php" method="post">
+                            <button type="submit" class="btn btn-success" value="Predict">Predict</button>
+                        </form>
                         </div>
                     </div>
                 </div>
@@ -52,17 +65,17 @@
                         <img src="assets/LLDA-MAPPED.png" alt="Quarterly Report" class="img-fluid">
                         <svg class="svg-overlay" viewBox="0 0 600 600"  preserveAspectRatio="xMidYMid meet">
                             
-                            <circle class="clickable-circle" cx="307" cy="63" r="8" fill="green" data-bs-toggle="modal" data-bs-target="#minorModal" />
+                            <circle class="clickable-circle" cx="307" cy="63" r="8" fill="green" data-bs-toggle="modal" data-bs-target="#Station_XIII" />
 
-                            <circle class="clickable-circle" cx="366" cy="133" r="8" fill="orange" data-bs-toggle="modal" data-bs-target="#moderateModal" />
+                            <circle class="clickable-circle" cx="366" cy="133" r="8" fill="orange" data-bs-toggle="modal" data-bs-target="#Station_V" />
 
-                            <circle class="clickable-circle" cx="466" cy="352" r="8" fill="red" data-bs-toggle="modal" data-bs-target="#massiveModal" />
+                            <circle class="clickable-circle" cx="466" cy="352" r="8" fill="red" data-bs-toggle="modal" data-bs-target="#Station_XIX" />
 
-                            <circle class="clickable-circle" cx="240" cy="365" r="8" fill="green" data-bs-toggle="modal" data-bs-target="#minorModal" />
+                            <circle class="clickable-circle" cx="240" cy="365" r="8" fill="green" data-bs-toggle="modal" data-bs-target="#Station_I" />
 
-                            <circle class="clickable-circle" cx="233" cy="493" r="8" fill="orange" data-bs-toggle="modal" data-bs-target="#moderateModal" />
+                            <circle class="clickable-circle" cx="233" cy="493" r="8" fill="orange" data-bs-toggle="modal" data-bs-target="#Station_XV" />
 
-                            <circle class="clickable-circle" cx="346" cy="635" r="8" fill="red" data-bs-toggle="modal" data-bs-target="#massiveModal" />
+                            <circle class="clickable-circle" cx="346" cy="635" r="8" fill="red" data-bs-toggle="modal" data-bs-target="#Station_XVI" />
                         </svg>
                     </div>
                 </div>
@@ -82,8 +95,8 @@
         </div>
     </main>
     
-    <!-- Minor Modal -->
-    <div class="modal fade" id="minorModal" tabindex="-1" aria-labelledby="minorModalLabel" aria-hidden="true">
+    <!-- Station_XIII -->
+    <div class="modal fade" id="Station_XIII" tabindex="-1" aria-labelledby="minorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -91,7 +104,28 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Information about minor occurrences.
+<!--Prediction from here-->
+                            <?php 
+                            $station_to_display = 'Stn XIII (Taytay)'; // Replace 'Station Name' with the actual station name you want to display
+                            if (isset($phyto[$station_to_display])) {
+                                // Round off the prediction to the nearest whole number
+                                $rounded_prediction = round($phyto[$station_to_display]);
+                                echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL<br>";
+                                    if ($rounded_prediction <= 10000) {
+                                        echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
+                                        
+                                    } elseif ($rounded_prediction <= 100000) {
+                                        echo "<b>Moderate:</b> Visible bloom with potential moderate impacts on water quality, including reduced oxygen levels. Potentially harmful to aquatic ecosystems.";
+                                    } else {
+                                        echo "<b>Massive:</b> Severe bloom with significant impacts, including potential toxin production, severe oxygen depletion, and major disruptions to aquatic life and water usability.";
+                                    }
+
+                            } else {
+                                echo "No prediction available for " . $station_to_display . "\n";
+                            }
+
+                        ?>
+<!--To Here-->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -100,8 +134,11 @@
         </div>
     </div>
 
-    <!-- Moderate Modal -->
-    <div class="modal fade" id="moderateModal" tabindex="-1" aria-labelledby="moderateModalLabel" aria-hidden="true">
+
+
+
+    <!-- Station_V -->
+    <div class="modal fade" id="Station_V" tabindex="-1" aria-labelledby="moderateModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -109,7 +146,28 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Information about moderate occurrences.
+<!--Prediction from here-->
+                        <?php 
+                            $station_to_display = 'Stn V (Northern West Bay)'; // Replace 'Station Name' with the actual station name you want to display
+                            if (isset($phyto[$station_to_display])) {
+                                // Round off the prediction to the nearest whole number
+                                $rounded_prediction = round($phyto[$station_to_display]);
+                                echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL <br>";
+                                    if ($rounded_prediction <= 10000) {
+                                        echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
+                                        
+                                    } elseif ($rounded_prediction <= 100000) {
+                                        echo "<b>Moderate:</b> Visible bloom with potential moderate impacts on water quality, including reduced oxygen levels. Potentially harmful to aquatic ecosystems.";
+                                    } else {
+                                        echo "<b>Massive:</b> Severe bloom with significant impacts, including potential toxin production, severe oxygen depletion, and major disruptions to aquatic life and water usability.";
+                                    }
+
+                            } else {
+                                echo "No prediction available for " . $station_to_display . "\n";
+                            }
+
+                        ?>
+<!--To Here-->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -118,8 +176,8 @@
         </div>
     </div>
     
-    <!-- Massive Modal -->
-    <div class="modal fade" id="massiveModal" tabindex="-1" aria-labelledby="massiveModalLabel" aria-hidden="true">
+    <!-- Station_XIX -->
+    <div class="modal fade" id="Station_XIX" tabindex="-1" aria-labelledby="massiveModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -127,7 +185,29 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Information about massive occurrences.
+<!--Prediction from here-->
+                    <?php 
+                        $station_to_display = 'Stn XIX (Muntinlupa)'; // Replace 'Station Name' with the actual station name you want to display
+                        if (isset($phyto[$station_to_display])) {
+                            // Round off the prediction to the nearest whole number
+                            $rounded_prediction = round($phyto[$station_to_display]);
+                            echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL <br>";
+                                if ($rounded_prediction <= 10000) {
+                                    echo "<b>Minor: </b>Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
+                                    
+                                } elseif ($rounded_prediction <= 100000) {
+                                    echo "<b>Moderate: </b>Visible bloom with potential moderate impacts on water quality, including reduced oxygen levels. Potentially harmful to aquatic ecosystems.";
+                                } else {
+                                    echo "<b>Massive: </b>Severe bloom with significant impacts, including potential toxin production, severe oxygen depletion, and major disruptions to aquatic life and water usability.";
+                                }
+
+                        } else {
+                            echo "No prediction available for " . $station_to_display . "\n";
+                        }
+
+                    ?>
+<!--To Here-->         
+  
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -135,6 +215,133 @@
             </div>
         </div>
     </div>
+
+    <!-- Station_I -->
+    <div class="modal fade" id="Station_I" tabindex="-1" aria-labelledby="massiveModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="massiveModalLabel">Massive</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<!--Prediction from here-->
+                    <?php 
+                        $station_to_display = 'Stn. I (Central West Bay)'; // Replace 'Station Name' with the actual station name you want to display
+                        if (isset($phyto[$station_to_display])) {
+                            // Round off the prediction to the nearest whole number
+                            $rounded_prediction = round($phyto[$station_to_display]);
+                            echo "<b>Prediction for " . $station_to_display . ": </b>" . $rounded_prediction . "counts/mL <br>";
+                                if ($rounded_prediction <= 10000) {
+                                    echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
+                                    
+                                } elseif ($rounded_prediction <= 100000) {
+                                    echo "<b>Moderate:</b> Visible bloom with potential moderate impacts on water quality, including reduced oxygen levels. Potentially harmful to aquatic ecosystems.";
+                                } else {
+                                    echo "<b>Massive:</b>Severe bloom with significant impacts, including potential toxin production, severe oxygen depletion, and major disruptions to aquatic life and water usability.";
+                                }
+
+                        } else {
+                            echo "No prediction available for " . $station_to_display . "\n";
+                        }
+
+                    ?>
+<!--To Here--> 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Station_XV -->
+    <div class="modal fade" id="Station_XV" tabindex="-1" aria-labelledby="massiveModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="massiveModalLabel">Massive</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<!--Prediction from here-->
+                    <?php 
+                        $station_to_display = 'Stn XV (San Pedro)'; // Replace 'Station Name' with the actual station name you want to display
+                        if (isset($phyto[$station_to_display])) {
+                            // Round off the prediction to the nearest whole number
+                            $rounded_prediction = round($phyto[$station_to_display]);
+                            echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL <br>";
+                                if ($rounded_prediction <= 10000) {
+                                    echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
+                                    
+                                } elseif ($rounded_prediction <= 100000) {
+                                    echo "<b>Moderate:</b> Visible bloom with potential moderate impacts on water quality, including reduced oxygen levels. Potentially harmful to aquatic ecosystems.";
+                                } else {
+                                    echo "<b>Massive:</b> Severe bloom with significant impacts, including potential toxin production, severe oxygen depletion, and major disruptions to aquatic life and water usability.";
+                                }
+
+                        } else {
+                            echo "No prediction available for " . $station_to_display . "\n";
+                        }
+
+                    ?>
+<!--To Here-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Station_XVI -->
+    <div class="modal fade" id="Station_XVI" tabindex="-1" aria-labelledby="massiveModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="massiveModalLabel">Massive</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+<!--Prediction from here-->
+                    <?php 
+                        $station_to_display = 'Stn.XVI (Sta Rosa)'; // Replace 'Station Name' with the actual station name you want to display
+                        if (isset($phyto[$station_to_display])) {
+                            // Round off the prediction to the nearest whole number
+                            $rounded_prediction = round($phyto[$station_to_display]);
+                            echo "<b>Prediction for " . $station_to_display . ":</b> " . $rounded_prediction . "counts/mL <br>";
+                                if ($rounded_prediction <= 10000) {
+                                    echo "<b>Minor:</b> Minimal or no noticeable impact on water quality. Some visible bloom may be present, but effects on aquatic life are typically limited.";
+                                    
+                                } elseif ($rounded_prediction <= 100000) {
+                                    echo "<b>Moderate:</b> Visible bloom with potential moderate impacts on water quality, including reduced oxygen levels. Potentially harmful to aquatic ecosystems.";
+                                } else {
+                                    echo "<b>Massive:</b> Severe bloom with significant impacts, including potential toxin production, severe oxygen depletion, and major disruptions to aquatic life and water usability.";
+                                }
+
+                        } else {
+                            echo "No prediction available for " . $station_to_display . "\n";
+                        }
+
+                    ?>
+<!--To Here-->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
+
+
+
+
+
+
 
     <!-- main content end -->
 
