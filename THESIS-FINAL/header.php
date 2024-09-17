@@ -1,19 +1,26 @@
 <header class="py-3">
-    <div class="container d-flex justify-content-between align-items-center">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap">
         <!-- Logo Section with Title and Tagline -->
-        <div class="d-flex justify-content-center align-items-center flex-grow-1">
+        <div class="d-flex align-items-center flex-grow-1 flex-wrap logo-section">
             <img src="assets/llda-logo-21.png" alt="LLDA Logo" class="header-logo me-3">
-            <div>
+            <div class="text-center">
                 <img src="assets/updated-logo-v-5-no-bilog-10.png" alt="Text Logo" class="header-logo-center me-0">
             </div>
             <img src="assets/bagong-pinas-10.png" alt="PH Logo" class="header-logo me-3">
         </div>
 
         <!-- Navigation Links Section -->
-        <nav id="nav-links" class="d-flex align-items-center"></nav>
+        <nav id="nav-links" class="d-flex align-items-center flex-wrap">
+            <ul class="d-flex align-items-center list-unstyled mb-0 flex-wrap">
+                <li class="nav-item me-3"><a href="home.php" class="nav-link">Home</a></li>
+                <li class="nav-item me-3"><a href="status.php" class="nav-link">Status</a></li>
+                <li class="nav-item me-3"><a href="repositories.php" class="nav-link">Repositories</a></li>
+                <li class="nav-item me-3"><a href="report.php" class="nav-link">Report</a></li>
+            </ul>
+        </nav>
 
         <!-- Button Section (default button) -->
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center ms-auto">
             <a href="#" id="dynamic-button" class="btn btn-success">Default Button</a>
         </div>
     </div>

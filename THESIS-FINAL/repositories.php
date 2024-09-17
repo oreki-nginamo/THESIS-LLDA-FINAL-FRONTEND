@@ -25,87 +25,85 @@
     <!-- HEADER nav bar end -->
 
     <!-- main content start -->
-    <main>
-        <div>
+    <main class="">
+    <!-- Prediction Section -->
+    <div class="card w-100 mb-5">
+        <div class="card-body">
+            <h1 class="pred_h1 text-center">Prediction</h1>
+            <form action="prediction_MI.php" method="POST">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Temperature</th>
+                                <th>Humidity</th>
+                                <th>Wind Speed</th>
+                                <th>pH (units)</th>
+                                <th>Ammonia (mg/L)</th>
+                                <th>Inorganic Phosphate (mg/L)</th>
+                                <th>BOD (mg/L)</th>
+                                <th>Total coliforms (MPN/100ml)</th>
+                                <th>Phytoplankton (cells/ml)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input class="form-control" type="text" name="temperature" required></td>
+                                <td><input class="form-control" type="text" name="humidity" required></td>
+                                <td><input class="form-control" type="text" name="wind_speed" required></td>
+                                <td><input class="form-control" type="text" name="ph" required></td>
+                                <td><input class="form-control" type="text" name="ammonia" required></td>
+                                <td><input class="form-control" type="text" name="phosphate" required></td>
+                                <td><input class="form-control" type="text" name="bod"></td>
+                                <td><input class="form-control" type="text" name="coliforms"></td>
+                                <td><input class="form-control" type="text" value="<?php echo $rounded; ?>" disabled></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success mx-2" name="submit_flask">Predict</button>
+                    <button type="reset" class="btn btn-secondary mx-2" name="reset_flask">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-
-
-            <h1 class="pred_h1">Prediction</h1>
-
-            <div class="table-container">
-                <table>
-                    <tr>
-                        <th>Temperature</th>
-                        <th>Humidity</th>
-                        <th>Wind Speed</th>
-                        <th>pH (units)</th>
-                        <th>Ammonia (mg/L)</th>
-                        <th>Inorganic Phosphate (mg/L)</th>
-                        <th>BOD (mg/l)</th>
-                        <th>Total coliforms (MPN/100ml)</th>
-                        <th></th>
-                        <th></th>
-                        <th>Phytoplankton (cells/ml)</th>
-                    </tr>
-
-                    <tr>
-                        <form action="prediction_MI.php" method="POST">
-                            <td><input class="pred_input" type="text" name="temperature" required></td>
-                            <td><input class="pred_input" type="text" name="humidity" required></td>
-                            <td><input class="pred_input" type="text" name="wind_speed" required></td>
-                            <td><input class="pred_input" type="text" name="ph" required></td>
-                            <td><input class="pred_input" type="text" name="ammonia" required></td>
-                            <td><input class="pred_input" type="text" name="phosphate" required></td>
-                            <td><input class="pred_input" type="text" name="bod"></td>
-                            <td><input class="pred_input" type="text" name="coliforms"></td>
-                            <td><input type="submit" value="Predict" name="submit_flask"></td>
-                            <td><input type="reset" value="Reset" name="reset_flask"></td>
-                            <td><input class="pred_input" type="text" value="<?php echo $rounded; ?>"></td>
-                        </form>
-
-                    </tr>
-                </table>
-            </div>
-
-
-
-            <h1 class="pred_h1">Model Testing/Retraining</h1>
-            <p class="model_p"><sup>This is used for uploading new datasets or retraing model with the current
-                    dataset</sup></p>
-
-            <div class="ML">
-                <form action="upload.php" method="POST" enctype="multipart/form-data">
+    <!-- Model Testing/Retraining Section -->
+    <div class="card w-100 mb-5">
+        <div class="card-body">
+            <h1 class="text-center">Model Testing/Retraining</h1>
+            <p class="text-center"><sup>This is used for uploading new datasets or retraining the model with the current dataset</sup></p>
+            
+            <form action="upload.php" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
                     <label>Upload Dataset (CSV Only): </label>
-                    <input type="file" name="dataset" accept=".csv" required>
-                    <input type="submit" value="Upload">
-                </form>
+                    <input type="file" class="form-control" name="dataset" accept=".csv" required>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success">Upload</button>
+                </div>
+            </form>
 
-                <label for="dataset">Datasets Available</label>
-
-                <form class="train-form" action="" method="POST">
-                    <select name="selected_dataset" id="dataset">
+            <form class="train-form" action="" method="POST">
+                <div class="mb-3">
+                    <label for="dataset">Datasets Available:</label>
+                    <select name="selected_dataset" id="dataset" class="form-select">
                         <option value="">Select a Dataset</option>
-
+                        <!-- PHP loop to generate options dynamically -->
                         <?php
                         // Define the folder path
                         $folderPath = 'C:/Users/John Wilson/Desktop/Datamodel';  // Change this to the correct folder
-                        
-                        // Check if the directory exists
                         if (is_dir($folderPath)) {
-                            // Open the folder
                             if ($folderHandle = opendir($folderPath)) {
-                                // Read through the files in the folder
                                 while (($file = readdir($folderHandle)) !== false) {
-                                    // Only display files (ignore . and .. directories)
                                     if ($file != '.' && $file != '..' && !is_dir($folderPath . '/' . $file)) {
-                                        // Only show files with specific extensions (e.g., .csv or .txt)
                                         $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
                                         if ($fileExtension == 'csv' || $fileExtension == 'txt') {
                                             echo "<option value=\"$file\">$file</option>";
                                         }
                                     }
                                 }
-                                // Close the directory handle
                                 closedir($folderHandle);
                             } else {
                                 echo "<option value=''>Unable to open directory</option>";
@@ -114,28 +112,25 @@
                             echo "<option value=''>Folder does not exist</option>";
                         }
                         ?>
-
                     </select>
-                    <input type="submit" value="Preview" name="Retrain">
-                    <input type="submit" value="Train" name="Train">
-                </form>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-secondary mx-2" name="Retrain">Preview</button>
+                    <button type="submit" class="btn btn-success mx-2" name="Train">Train</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            </div>
+    <!-- Results Section -->
+    <div class="card w-100">
+        <div class="card-body">
+            <h5 class="text-center">Training Evaluation Results</h5>
+            <textarea class="form-control area-results" readonly><?php echo "Mean Squared Error (MSE): $mse\nMean Absolute Error (MAE): $mae\nR-squared (R²): $r2"; ?></textarea>
+        </div>
+    </div>
+</main>
 
-            <div class="results">
-
-                <p>Training Evaluation Results</p>
-                <textarea class="area-results">
-<?php
-echo "Mean Squared Error (MSE): $mse";
-echo "Mean Absolute Error (MAE): $mae";
-echo "R-squared (R²): $r2";
-?>
-
-</textarea>
-
-            </div>
-    </main>
     <!-- main content end -->
 
     <!-- FOOTER Section Start -->

@@ -1,125 +1,142 @@
-/* Navbar adjustments*/
+/* Header Styling */
 header {
-    background-color: #BFD28E !important;
-    padding: 10px 0; /* Adjust padding to control height */
-    width: 100%; /* Ensure the header spans the full width */
+    background-color: #BFD28E;
+    padding: 15px 0;
+    width: 100%;
     position: relative;
+    z-index: 1000;
 }
 
+/* Adjust container for different screen sizes */
 .container {
-    max-width: 1600px; /* Adjust the max width to suit your needs */
-    margin: 0 auto;    /* Center the container horizontally */
+    max-width: 1600px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
+/* Logo Section */
+.logo-section {
+    justify-content: flex-end; /* Ensures it is pushed to the far right */
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
 
-/* CSS for the header logos */
+/* Logo Styling */
 .header-logo {
-    max-width: 150px; /* Smaller logo size for compactness */
+    max-width: 150px;
     height: auto;
 }
 
 .header-logo-center {
-    width: 450px; /* Increase the size to make it more prominent */
-    height: auto; /* Maintain aspect ratio */
+    width: 450px;
+    height: auto;
 }
 
-/* Adjust the title font size and color */
-h1 {
+/* Navigation Links Styling */
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Align links to the left */
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+.nav-link {
     color: #056839;
     font-weight: bold;
-    letter-spacing: 1px; /* Add some letter spacing for a cleaner look */
-}
-/* Flex grow ensures that the logo, title, and tagline take up as much space as possible */
-.flex-grow-1 {
-    flex-grow: 1;
-}
-p {
-    font-size: 0.875rem;
-    color: #056839; /* Ensure visibility */
-    margin-top: 0; /* Reduce margin to align more closely with the title */
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 8px 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 18px;
 }
 
-/* Style the Register button */
+.nav-link:hover {
+    background-color: #7ae992;
+    border-radius: 20px;
+    color: #1B7019;
+}
+
+.nav-link.active {
+    color: white;
+    background-color: #1B7019;
+    border-radius: 20px;
+}
+
+/* Button Styling */
 .btn-success {
     background-color: #1B7019;
     border-color: #056839;
     padding: 10px;
-    font-size: 18px;    /* Larger text */
-    width: 153px;       /* Set fixed width */
-    height: 52px;       /* Set fixed height */
-
+    font-size: 18px;
+    width: 153px;
+    height: 52px;
 }
 
-.btn-success:hover {
-    background-color: #045c31;
-    border-color: #045c31;
+/* Responsive Styling */
+@media (max-width: 1200px) {
+    nav ul {
+        justify-content: center;
+    }
+
+    .nav-link {
+        font-size: 1rem;
+        padding: 5px 10px;
+    }
 }
 
-/* Ensure elements align and stay on the same row */
-.d-flex {
-    flex-wrap: nowrap; /* Prevent wrapping */
-}
-
-/* Navigation Links Style*/
-/* Style for the navigation bar links */
-nav ul {
-    list-style: none; /* Remove bullet points */
-    margin: 0;        /* Remove default margin */
-    padding: 0;       /* Remove default padding */
-    display: flex;    /* Display nav items horizontally */
-    align-items: center; /* Vertically align the nav items */
-}
-
-/* Style each nav link */
-nav ul li {
-    margin-right: 20px; /* Space between the nav items */
-}
-
-/* Link styles */
-.nav-link {
-    color: #056839; /* Link text color (use your desired color) */
-    font-weight: bold;
-    text-decoration: none; /* Remove underline */
-    font-size: 1.1rem; /* Adjust size as needed */
-    padding: 8px 12px; /* Add padding around the link */
-    transition: background-color 1s ease, color 4s ease; /* Smooth transition on hover */
-    border-radius: 18px;        /* Rounded corners */
-}
-
-/* Hover effect for nav links */
-.nav-link:hover {
-    background-color: #7ae992; /* Light background color on hover */
-    border-radius: 20px;        /* Rounded corners */
-    color: #1B7019;            /* Change color on hover */
-}
-
-/* Active nav link style (for the current page) */
-.nav-link.active {
-    color: white;
-    background-color: #1B7019; /* Make active link stand out */
-    border-radius: 20px;        /* Rounded corners for active link */
-}
-
-
-/* Media Queries for Responsiveness */
-@media (max-width: 768px) {
-    /* Adjust the logo and button size for smaller screens */
+@media (max-width: 992px) {
+    /* Adjust logo and button size for smaller screens */
     .header-logo {
-        max-width: 60px;
+        max-width: 100px;
     }
 
-    header h1 {
-        font-size: 1.25rem; /* Adjust font size for smaller screens */
+    .header-logo-center {
+        width: 250px;
     }
 
-    header p {
-        font-size: 0.75rem; /* Smaller tagline font size */
+    nav ul {
+        flex-wrap: wrap;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+        padding: 6px 8px;
     }
 
     .btn-success {
-        font-size: 0.875rem; /* Smaller button text */
+        font-size: 0.875rem;
+        padding: 8px 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .btn-success {
+        margin-top: 10px;
+        font-size: 0.875rem;
+        width: auto;
+    }
+
+    nav ul {
+        flex-direction: column;
+    }
+
+    .nav-link {
+        font-size: 0.875rem;
+        padding: 6px 8px;
     }
 }
