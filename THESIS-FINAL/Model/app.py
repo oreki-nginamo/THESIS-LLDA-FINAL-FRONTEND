@@ -20,7 +20,7 @@ with open('xgb_model.pkl', 'rb') as file:
     xgb_model = pickle.load(file)
 
 # Define the path to your CSV file
-csv_file_path = 'Knn_time.csv'
+csv_file_path = 'MICE_Time.csv'
 new_csv = 'Predicted_Using_App.csv'
 
 # List of station names
@@ -39,10 +39,7 @@ def predict_and_learn():
             return jsonify({'status': 'Error', 'message': 'Date column is missing in the input data'})
 
         # Warnings management
-        warnings.filterwarnings("ignore", message="Non-invertible starting MA parameters found. Using zeros as starting parameters.")
-        warnings.filterwarnings("ignore", message="A date index has been provided, but it has no associated frequency information and so will be ignored when e.g. forecasting.")
-        warnings.filterwarnings("ignore", message="No supported index is available. Prediction results will be given with an integer index beginning at `start`.")
-        warnings.filterwarnings("ignore", message="No supported index is available. In the next version, calling this method in a model without a supported index will result in an exception.")
+        warnings.filterwarnings("ignore")
 
         # Define SARIMA parameters
         sarima_order = (1, 1, 1)
