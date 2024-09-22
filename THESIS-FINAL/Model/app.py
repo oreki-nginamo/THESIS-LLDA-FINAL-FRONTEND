@@ -115,19 +115,34 @@ def predict_and_learn():
             # Concatenate the date_df with combined_df along the columns
             combined_df = pd.concat([combined_df, date_df, station_df], axis=1)
 
-            # Save the new data with prediction to the CSV file
+            
+            # Check if the file exists
             if os.path.exists(new_csv):
                 # Load the existing dataset to ensure columns match
                 existing_df = pd.read_csv(new_csv)
-                
-                # Reorder combined_df to match the order of columns in existing_df
-                combined_df = combined_df.reindex(columns=existing_df.columns)
-                
-                # Append the data to the CSV file
-                combined_df.to_csv(new_csv, mode='a', header=False, index=False)
+            
+                # Create a combined key from 'Date' and 'Monitoring Stations' to identify duplicates
+                combined_df['Key'] = combined_df['Date'] + '-' + combined_df['Monitoring Stations']
+                existing_df['Key'] = existing_df['Date'] + '-' + existing_df['Monitoring Stations']
+            
+                # Filter out rows from combined_df where the key already exists in existing_df
+                combined_df = combined_df[~combined_df['Key'].isin(existing_df['Key'])]
+            
+                # Drop the temporary 'Key' column after filtering
+                combined_df = combined_df.drop(columns=['Key'])
+            
+                # Check if there are any rows left to append
+                if not combined_df.empty:
+                    # Append the new data to the CSV file
+                    combined_df.to_csv(new_csv, mode='a', header=False, index=False)
+                    print("New predictions appended to the file.")
+                else:
+                    print("No new dates and stations to append. All combinations are already predicted.")
             else:
                 # If the file does not exist, save the combined_df as a new CSV
                 combined_df.to_csv(new_csv, mode='w', header=True, index=False)
+                print("File created and saved with new predictions.")
+
             
             forecast_df_dict = forecast_df.to_dict(orient='records')[0]
             results[station_name] = {
